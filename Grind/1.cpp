@@ -1,15 +1,15 @@
-#include<bits/stdc++.h>
-#include<iostream>
+#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
 
 int main()
 {
     int t;
-    cin>>t;
+    cin >> t;
 
-    while(t--)
+    while (t--)
     {
-
     }
 
     return 0;

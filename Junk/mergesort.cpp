@@ -60,16 +60,20 @@ void merge(vector<int> &a, int start, int end)
 
 void mergesort(vector<int>&a, int start, int end)
 {
-    if(start+1>=end) return;
-    int mid = start + (end-start)/2;
+    if(end>start+1)
+    {
+        int mid = start + (end - start) / 2;
 
-    mergesort(a, start, mid);
-    
-    mergesort(a, mid, end);
+        mergesort(a, start, mid);
 
-    merge(a,start,end); 
-    cout<<"out of merge step"<<endl;
-    return;
+        mergesort(a, mid, end);
+
+        cout<<"Stuck here"<<start<<" "<<mid<<" "<<end<<endl;
+
+        merge(a, start, end);
+        cout << "out of merge step" << endl;
+        return;
+    }
 }
 int main()
 {
