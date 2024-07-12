@@ -14,15 +14,43 @@ void solve()
     for(int i=0; i<n; i++) cin>>h[i];
     for(int i=0; i<m; i++) cin>>t[i];
 
+    // multiset<int> bigbrain;
+    list<int> bigbrain;
+
+    for(int i=0; i<n; i++) bigbrain.push_back(h[i]);
+
     sort(h.begin(),h.end());
 
     for(int i=0; i<m; i++)
     {
-        int index;
-        index = upper_bound(h.begin(),h.end(), t[i]) - h.begin();
+        if(bigbrain.size()==0)
+        {
+            cout<<-1<<" ";
+            continue;
+        }
+        auto index = lower_bound(bigbrain.begin(), bigbrain.end(), t[i]);
         // if(h[index]!=t[i]) index--;
-        index--;
-
+        if(index==bigbrain.begin())
+        {
+            if(*index>t[i])
+            {
+                cout<<-1<<" ";
+            }
+            else
+            {
+                cout << *index << " ";
+                bigbrain.erase(index);
+            }
+        }
+        else
+        {
+            if(index==bigbrain.end()) index--;
+            else
+            if (*index > t[i])
+                index--;
+            cout << *index << " ";
+            bigbrain.erase(index);
+        }
        // cout << index << endl;
 
         // while(visit[index]==1 && index>=0)
@@ -30,29 +58,6 @@ void solve()
         //     index--;
         // }
       //  cout << index << endl;
-      
-        if(index<0) index=0;
-        if((index==0) && visit[index]==0)
-        {
-            cout<<h[index]<<endl;
-            visit[index]=1;
-            continue;
-        } 
-        else if(index==0)
-        {
-            cout<<-1<<endl;
-            continue;
-        }
-
-        if(index==n-1 && visit[index]==1)
-        {
-            cout<<-1<<endl;
-            continue;
-        }
-
-        cout<<h[index]<<endl;
-        visit[index]=1;
-        if(index!= n-1) h[index] = h[index+1];
     }
 }
 

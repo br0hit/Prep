@@ -4,6 +4,10 @@
         "ostream": "cpp",
         "cmath": "cpp",
         "vector": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "chrono": "cpp",
+        "span": "cpp",
+        "type_traits": "cpp",
+        "random": "cpp"
     }
 }

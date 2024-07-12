@@ -8,6 +8,7 @@ typedef pair<int, int> pi;
 #define fr1(i, n) for (i = n; i >= 0; i--)
 #define F first
 #define S second
+int i;
 
 int modval = 1e9 + 7;
 
