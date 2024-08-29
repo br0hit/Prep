@@ -1,0 +1,41 @@
+Maximum candies
+Given is tree of Ninodes and N-fedges rodted at riode t with exectly one caridy placed at each node. Let's say the cost of the candy placed of the node is A, You have amount of money Now, you will choose exactly one node (say, and will start trying the candies placed on the path from node u to the root ventil you non out of money, that is, first, you will thoy the candy placed at node in then the candy placed at the ancestor of as then its ancestor and so on until you run out of money or you reach root node. Also, you cannot skip over a node without buying the candy placed at that node
+Calculate the maximum number of candies in a given amount of money you can buy by choosing exactly one starting node.
+Notes
+A graph is connected If, for each pair of nodes u and v, there exists a path between these two nodes in the graph.
+A tree is a connected graph with N nodes and N-fedges.
+Function description
+Complete the function solve. This function takes the following 4 parameters and returns an Integer
+N Represents the number of nodes in the tree
+K. Represents the amount of money you have
+A: Represents the cost of candies placed on nodes
+Edges. Represents a 20 array representing the edges (u, v) in the tree
+Input format for custom testing
+Note: Use this input format if you are testing against custom input or writing code in a language where we don't provide bollerplate code.
+The first line contains T, which represents the number of test cases:
+For each Tese case
+The first line contains an integer N denoting the number of nodes in the tree.
+• The second line contains an integer denoting the amount of money you have.
+
+The next line contains N space separated integers dentoting the cost of the candy placed at the ith node.
+The next N-lines contain two space separated integers and denoting that there is an edge between and
+Output format
+For each test case in a new line, pont the maximum number of candies you can buy in the given amount of money by choosing exactly one starting node.
+
+Sample input:
+
+2 
+6
+10
+4 12 3 2 5 3
+1 2 
+1 3
+3 4
+3 5
+5 6
+3
+
+Sample output:
+
+3 
+2

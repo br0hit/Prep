@@ -1,86 +1,106 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
-typedef vector<int> vi;
-typedef pair<int, int> pi;
-#define ll long long
-#define endl '\n'
-#define fr(i, a, n) for (i = a; i < n; i++)
-#define fr1(i, n) for (i = n; i >= 0; i--)
-#define F first
-#define S second
-int modval = 1e9 + 7;
 
-int findh(int node, int parent, vector<int> gr[], vector<int> &height, vector<int> &maxheights)
+const int MAXN = 200005;
+
+struct SegmentTree
 {
-    // cout << node << " " << parent << endl;
-    int maxh = 0;
-    vector<int> temps;
-    for (auto u : gr[node])
-    {
-        if (u == parent)
-            continue;
+    vector<long long> tree, lazy;
+    int size;
 
-        if (height[u] != -1)
-        {
-            maxh = max(maxh, height[u] + 1);
-            temps.push_back(height[u]);
-        }
-        else
-        {
-            int val = findh(u, node, gr, height, maxheights);
-            maxh = max(maxh, val + 1);
-            temps.push_back(val);
-        }
+    SegmentTree(int n)
+    {
+        size = 1;
+        while (size < n)
+            size *= 2;
+        tree.assign(2 * size, 0LL);
+        lazy.assign(2 * size, 0LL);
     }
 
-    if (temps.size() == 0)
-        maxheights[node] = 0;
-    else
+    void push(int node)
     {
-        sort(temps.rbegin(), temps.rend());
-        if (temps.size() == 1)
+        tree[node * 2] += lazy[node];
+        lazy[node * 2] += lazy[node];
+        tree[node * 2 + 1] += lazy[node];
+        lazy[node * 2 + 1] += lazy[node];
+        lazy[node] = 0;
+    }
+
+    void update(int l, int r, long long value, int node, int nl, int nr)
+    {
+        if (l > nr || r < nl)
+            return;
+        if (l <= nl && nr <= r)
         {
-            maxheights[node] = temps[0] + 1;
+            tree[node] += value;
+            lazy[node] += value;
+            return;
         }
-        else
-            maxheights[node] = temps[0] + temps[1] + 2;
+        push(node);
+        int mid = (nl + nr) / 2;
+        update(l, r, value, node * 2, nl, mid);
+        update(l, r, value, node * 2 + 1, mid + 1, nr);
+        tree[node] = max(tree[node * 2], tree[node * 2 + 1]);
     }
 
-
-
-    return height[node] = maxh;
-}
-
-void solve()
-{
-    int n;
-    cin >> n;
-
-    vector<int> gr[n + 1];
-
-    int i;
-    fr(i, 0, n - 1)
+    long long query(int l, int r, int node, int nl, int nr)
     {
-        int t1, t2;
-        cin >> t1 >> t2;
-
-        gr[t1].push_back(t2);
-        gr[t2].push_back(t1);
+        if (l > nr || r < nl)
+            return LLONG_MIN;
+        if (l <= nl && nr <= r)
+            return tree[node];
+        push(node);
+        int mid = (nl + nr) / 2;
+        return max(query(l, r, node * 2, nl, mid), query(l, r, node * 2 + 1, mid + 1, nr));
     }
 
+    void update(int l, int r, long long value)
+    {
+        update(l, r, value, 1, 0, size - 1);
+    }
 
-    vector<int> height(n + 1, -1);
-    vector<int> maxh(n + 1, 0);
-
-    int tempstore = findh(1, 0, gr, height, maxh);
-
-    sort(maxh.rbegin(), maxh.rend());
-    cout << maxh[0] << endl;
-}
-
+    long long query(int l, int r)
+    {
+        return query(l, r, 1, 0, size - 1);
+    }
+};
 
 int main()
 {
-   ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-       solve();
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int N, K;
+    cin >> N >> K;
+
+    SegmentTree st(MAXN);
+
+    for (int i = 0; i < N; i++)
+    {
+        int L, R, X;
+        cin >> L >> R >> X;
+        st.update(L, R, X);
+    }
+
+    vector<int> result;
+    int current = 0;
+    long long prev_value = -1;
+
+    while (current < MAXN)
+    {
+        long long max_value = st.query(current, MAXN - 1);
+        if (max_value <= prev_value)
+            break;
+
+        result.push_back(current);
+        prev_value = max_value;
+        current += K;
+    }
+
+    cout << result.size() << " " << result[0] << " " << result.back() << endl;
+
+    return 0;
 }
